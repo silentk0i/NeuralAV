@@ -66,18 +66,18 @@ x_53 = data['callbacks.nanonymous'].values
 x_54 = data['callbacks.ngeneric'].values
 x_55 = data['Category'].values
 
-x_data = np.stack((x_0, x_1), axis=1)
+x_data = np.stack((x_0, x_1, x_2, x_3, x_4, x_5, x_6), axis=1)
 y_data = data['Class'].values
 
 color_dict = { 'Benign':'blue', 'Malware':'red' }
-plt.scatter(x_data[:,0], x_data[:,1], c=[ color_dict[i] for i in y_data ], cmap="RdBu")
+plt.scatter(x_data[:,0], x_data[:,6], c=[ color_dict[i] for i in y_data ], cmap="RdBu")
 plt.show()
 
 num_dict = { 'Benign': 0, 'Malware': 1}
 x_train, x_test, y_train, y_test = train_test_split(x_data, np.array([ num_dict[i] for i in y_data ]), test_size=0.3)
 
 model = models.Sequential()
-model.add(layers.Normalization(input_shape = [2,], axis = None))
+model.add(layers.Normalization(input_shape = [7,], axis = None))
 model.add(layers.Dense(2, activation='sigmoid', activity_regularizer=tf.keras.regularizers.L2(0.01)))
 model.add(layers.Dense(1, activation = 'sigmoid', activity_regularizer=tf.keras.regularizers.L2(0.01)))
 model.summary()
@@ -91,8 +91,8 @@ model.compile(optimizer='adam',
 history = model.fit(x_train, y_train, epochs=300,
                     validation_data=(x_test, y_test))
 
-plot_decision_regions(x_test, y_test, clf=model, legend=2)
-plt.show()
+#plot_decision_regions(x_test, y_test, clf=model, legend=2)
+#plt.show()
 
 plt.plot(history.history['accuracy'], label='accuracy')
 plt.plot(history.history['val_accuracy'], label = 'val_accuracy')
