@@ -5,6 +5,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
 from mlxtend.plotting import plot_decision_regions
 
 data=pd.read_csv('Obfuscated-MalMem2022.csv')
@@ -66,7 +67,10 @@ x_53 = data['callbacks.nanonymous'].values
 x_54 = data['callbacks.ngeneric'].values
 x_55 = data['Category'].values
 
-x_data = np.stack((x_0, x_1, x_2, x_3, x_4, x_5, x_6), axis=1)
+x_data = np.stack((x_0, x_1, x_2, x_3, x_4, x_5, x_6,x_7,x_8,x_9,x_10,x_11,x_12,x_13,x_14,x_15,x_16,x_17,x_18,x_19,x_20,x_21,x_22,x_23,
+                   x_24,x_25,x_26,x_27,x_28,x_29,x_30,x_31,x_32,x_33,x_34,x_35,x_36,x_37,x_38,x_39,x_40,x_41,x_42,
+                   x_43,x_44,x_45,x_46,x_47,x_48,x_49,x_50,x_51,x_52,x_53,x_54), axis=1)
+# x_data = np.stack((x_0, x_1, x_2, x_3, x_4, x_5, x_6), axis=1)
 y_data = data['Class'].values
 
 color_dict = { 'Benign':'blue', 'Malware':'red' }
@@ -76,8 +80,14 @@ plt.show()
 num_dict = { 'Benign': 0, 'Malware': 1}
 x_train, x_test, y_train, y_test = train_test_split(x_data, np.array([ num_dict[i] for i in y_data ]), test_size=0.3)
 
+# Normalization
+scaler = MinMaxScaler()
+x_train = scaler.fit_transform(x_train)
+x_test = scaler.transform(x_test)
+
 model = models.Sequential()
-model.add(layers.Normalization(input_shape = [7,], axis = None))
+model.add(layers.Normalization(input_shape = [55,], axis = None))
+# model.add(layers.Normalization(input_shape = [7,], axis = None))
 model.add(layers.Dense(2, activation='sigmoid', activity_regularizer=tf.keras.regularizers.L2(0.01)))
 model.add(layers.Dense(1, activation = 'sigmoid', activity_regularizer=tf.keras.regularizers.L2(0.01)))
 model.summary()
