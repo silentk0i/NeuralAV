@@ -1,2 +1,3 @@
 # NeuralAV
 Building in progress...
+Note: Trained model (.h5) and ember dataset located in OneDrive
